@@ -1,0 +1,46 @@
+
+Bedingung IstWegFrei
+  wahr
+
+  wenn IstWand dann
+    falsch
+  *wenn
+
+  wenn IstZiegel dann
+    falsch
+  *wenn
+
+*Bedingung
+
+
+Methode GeheBisZumHindernis
+  wiederhole solange IstWegFrei
+    schritt
+  *wiederhole
+*Methode
+
+Methode FindeSpalt
+
+  LinksDrehen
+  Schritt
+  RechtsDrehen
+  
+  wenn IstZiegel dann
+    FindeSpalt
+  *wenn
+*Methode
+
+Methode GeheBisZurWand
+  wiederhole solange NichtIstWand 
+    Schritt
+  *wiederhole
+*Methode
+
+{****** Hauptprogramm *******}
+
+GeheBisZumHindernis
+
+wenn NichtIstWand dann
+  FindeSpalt
+  GeheBisZurWand
+*wenn

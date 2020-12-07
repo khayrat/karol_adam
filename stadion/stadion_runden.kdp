@@ -1,0 +1,501 @@
+Bedingung IstAmStadion
+  falsch
+
+  wenn IstZiegel dann
+    wahr
+  *wenn
+
+  wenn IstSüden dann    
+    LinksDrehen
+    wenn IstZiegel dann
+      wahr
+    *wenn
+    RechtsDrehen
+  *wenn
+
+  wenn IstNorden dann
+    RechtsDrehen
+    wenn IstZiegel dann
+      wahr
+    *wenn
+    LinksDrehen
+  *wenn
+*Bedingung
+
+Bedingung IstNichtAmStadion
+  wahr
+
+  wenn IstAmStadion dann
+    falsch
+  *wenn
+
+*Bedingung
+
+
+Methode Umdrehen
+   LinksDrehen; LinksDrehen
+*Methode
+
+Methode SchrittZurück
+  Umdrehen
+  Schritt
+  Umdrehen
+*Methode
+
+Bedingung EineSeiteOhneZiegel
+  falsch
+  LinksDrehen
+  wenn NichtIstZiegel dann
+    wahr
+  *wenn
+  Umdrehen
+  wenn NichtIstZiegel dann
+    wahr
+  *wenn
+  Umdrehen
+  RechtsDrehen
+*Bedingung
+
+Bedingung IstEingangUnterprüfung
+    wahr
+    wenn NichtIstWand dann
+      Schritt
+      wenn EineSeiteOhneZiegel dann
+        falsch
+      *wenn
+      SchrittZurück  
+    *wenn
+    wenn IstWand dann
+      falsch
+    *wenn
+*Bedingung
+
+Bedingung IstEingang
+  falsch
+  LinksDrehen
+  wenn NichtIstZiegel dann
+    wenn IstEingangUnterprüfung dann
+      wahr
+    *wenn
+  *wenn
+  Umdrehen
+  wenn NichtIstZiegel dann
+    wenn IstEingangUnterprüfung dann
+      wahr
+    *wenn
+  *wenn
+  Umdrehen
+  RechtsDrehen
+
+*Bedingung
+
+Bedingung NichtIstEingang
+  wahr
+  wenn IstEingang dann
+    falsch
+  *wenn
+*Bedingung
+
+
+
+Methode GeheEineSpalteNachOsten
+  wenn IstWand dann
+    wenn IstSüden dann
+      LinksDrehen
+      Schritt
+      LinksDrehen
+    *wenn
+  *wenn
+
+  wenn IstWand dann
+    wenn IstNorden dann
+      RechtsDrehen
+      Schritt
+      RechtsDrehen
+    *wenn
+  *wenn
+*Methode
+
+Methode GeheZumStadion
+  wiederhole solange IstNichtAmStadion
+    wenn NichtIstWand dann
+      Schritt
+    *wenn
+
+    wenn IstWand dann
+      GeheEineSpalteNachOsten
+    *wenn
+  *wiederhole
+*Methode
+
+Bedingung AmStadion
+  falsch
+  LinksDrehen
+  wenn IstZiegel dann
+    wahr
+  *wenn
+
+  Umdrehen
+
+  wenn IstZiegel dann
+    wahr
+  *wenn
+  Umdrehen
+  RechtsDrehen 
+*Bedingung
+
+Bedingung IstAnDerKante
+  wahr
+  wenn AmStadion dann
+    falsch
+  *wenn 
+*Bedingung
+
+Bedingung IstStadionLinks
+  falsch
+  LinksDrehen
+  wenn NichtIstWand dann
+    Schritt
+    LinksDrehen
+    wenn IstZiegel dann
+      wahr
+    *wenn
+    RechtsDrehen
+    SchrittZurück
+  *wenn
+  RechtsDrehen
+*Bedingung
+
+Bedingung IstStadionRechts
+  falsch
+  RechtsDrehen
+  wenn NichtIstWand dann
+    Schritt
+    RechtsDrehen
+    wenn IstZiegel dann
+      wahr
+    *wenn
+    LinksDrehen
+    SchrittZurück
+  *wenn
+  LinksDrehen
+*Bedingung
+
+Methode DreheRichtungStadion
+  wenn IstStadionLinks dann
+    LinksDrehen
+    MarkeSetzen
+  *wenn
+  wenn NichtIstMarke dann
+    wenn IstStadionRechts dann
+      RechtsDrehen
+    *wenn
+  *wenn
+  wenn IstMarke dann
+    MarkeLöschen
+  *wenn
+*Methode
+
+Methode GeheZumEingang
+  wenn IstZiegel dann 
+    LinksDrehen
+  *wenn
+  wiederhole solange NichtIstEingang
+    wenn IstAnDerKante dann
+      DreheRichtungStadion
+    *wenn
+    wenn IstWand dann
+      Umdrehen
+    *wenn
+    Schritt
+  *wiederhole
+*Methode
+
+
+Methode DreheRichtungEingang
+  { die Marke kennzeichnet, dass wir nicht weiter forschen müsssen }
+  RechtsDrehen
+  wenn IstWand dann
+    Umdrehen
+    MarkeSetzen
+  *wenn
+
+  wenn NichtIstMarke dann
+    Umdrehen
+    wenn IstWand dann
+      MarkeSetzen
+    *wenn
+    Umdrehen
+  *wenn
+
+  wenn NichtIstMarke dann
+    Schritt
+    LinksDrehen
+    wenn NichtIstZiegel dann
+      { der Eingang ist auf der anderen Seite }
+      LinksDrehen
+      Schritt
+      MarkeSetzen
+    *wenn
+    wenn IstZiegel dann
+      LinksDrehen
+      Schritt
+      Umdrehen
+      MarkeSetzen
+    *wenn
+  *wenn
+
+  wenn NichtIstMarke dann
+  *wenn
+
+  { aufräumen }
+  wenn IstMarke dann
+    MarkeLöschen
+  *wenn
+*Methode
+
+Methode DreheRunde
+  MarkeSetzen
+  LinksDrehen
+  
+  wenn IstZiegel dann
+    RechtsDrehen
+  *wenn
+  Schritt
+
+  wiederhole solange NichtIstMarke
+    wenn IstZiegel dann
+      RechtsDrehen
+    *wenn
+  Schritt 
+  *wiederhole
+  MarkeLöschen
+*Methode
+
+
+
+Methode GehVorwärte
+  wiederhole solange NichtIstWand
+    Schritt
+  *wiederhole
+*Methode
+
+Bedingung ImEingang
+  falsch
+
+  LinksDrehen
+  wenn IstZiegel dann
+    Umdrehen
+    wenn IstZiegel dann
+      wahr
+    *wenn
+    Umdrehen
+  *wenn
+  RechtsDrehen
+
+*Bedingung
+
+Bedingung NichtIstNorden
+  wahr
+  wenn IstNorden dann
+    falsch
+  *wenn
+*Bedingung
+
+Bedingung NichtIstSüden
+  wahr
+  wenn IstSüden dann
+    falsch
+  *wenn
+*Bedingung
+
+Bedingung NichtIstOsten
+  wahr
+  wenn IstOsten dann
+    falsch
+  *wenn
+*Bedingung
+
+Bedingung NichtIstWesten
+  wahr
+  wenn IstWesten dann
+    falsch
+  *wenn
+*Bedingung
+
+
+Methode DrehNachNorden
+  wiederhole solange NichtIstNorden
+    LinksDrehen
+  *wiederhole
+*Methode
+
+
+Methode DrehNachSüden
+  wiederhole solange NichtIstSüden
+    LinksDrehen
+  *wiederhole
+*Methode
+
+Methode DrehNachOsten
+  wiederhole solange NichtIstOsten
+    LinksDrehen
+  *wiederhole
+*Methode
+
+Methode DrehNachWesten
+  wiederhole solange NichtIstWesten
+    LinksDrehen
+  *wiederhole
+*Methode
+
+Bedingung AusgangCheck
+  falsch
+  wenn NichtIstWand dann
+    wenn NichtIstZiegel dann
+      Schritt
+      wenn ImEingang dann
+        wahr
+      *wenn
+      SchrittZurück
+    *wenn
+  *wenn
+*Bedingung
+
+Bedingung AusgangNorden
+  DrehNachNorden
+  falsch
+  wenn AusgangCheck dann
+    wahr
+  *wenn
+*Bedingung
+
+Bedingung AusgangSüden
+  DrehNachSüden
+  falsch
+  wenn AusgangCheck dann
+    wahr
+  *wenn
+*Bedingung
+
+Bedingung AusgangOsten
+  DrehNachOsten
+  falsch
+  wenn AusgangCheck dann
+    wahr
+  *wenn
+*Bedingung
+
+Bedingung AusgangWesten
+  DrehNachWesten
+  falsch
+  wenn AusgangCheck dann
+    wahr
+  *wenn
+*Bedingung
+
+Methode DreheRichtungAusgang
+   wenn AusgangNorden dann
+    DrehNachNorden
+    MarkeSetzen
+   *wenn
+
+  wenn NichtIstMarke dann
+    wenn AusgangSüden dann
+      DrehNachSüden
+      MarkeSetzen
+    *wenn
+  *wenn
+
+  wenn NichtIstMarke dann
+    wenn AusgangOsten dann
+      DrehNachOsten
+      MarkeSetzen
+    *wenn
+  *wenn
+
+  wenn NichtIstMarke dann
+   { es bleibt nur der Westen }
+   DrehNachWesten
+   MarkeSetzen
+  *wenn
+
+  MarkeLöschen
+*Methode
+
+Methode GeheDurchEingang
+  {DreheRichtungEingang}
+  DreheRichtungAusgang
+  Schritt
+  Schritt
+*Methode
+
+Methode GeheNachHause
+  wenn IstNorden dann
+    GehVorwärte
+    LinksDrehen
+    GehVorwärte
+  *wenn
+
+  wenn NichtIstMarke dann
+    wenn IstWesten dann
+      RechtsDrehen
+      GehVorwärte
+      LinksDrehen
+      GehVorwärte
+    *wenn
+  *wenn
+
+  wenn NichtIstMarke dann
+    wenn IstOsten dann
+      LinksDrehen
+      GehVorwärte
+      LinksDrehen
+      GehVorwärte
+    *wenn
+  *wenn
+
+  wenn NichtIstMarke dann
+    { wir schauen nach Süden }
+    DrehNachWesten
+    GehVorwärte
+    DrehNachNorden
+    wenn NichtIstZiegel dann
+      GehVorwärte
+      LinksDrehen
+      GehVorwärte
+    *wenn
+  
+    wenn NichtIstMarke dann
+      DrehNachOsten
+      GehVorwärte
+      DrehNachNorden
+      GehVorwärte
+      LinksDrehen
+      GehVorwärte
+    *wenn
+  
+  *wenn
+  
+  DrehNachSüden
+
+*Methode
+
+{***** Hauptprogramm ******}
+
+GeheZumStadion
+GeheZumEingang
+GeheDurchEingang
+DreheRunde
+GeheDurchEingang
+GeheNachHause
+
+
+{
+GeheZumStadion
+GeheZumEingang
+GeheDurchEingang
+DreheRunde
+GeheDurchEingang
+GeheNachHause
+}
